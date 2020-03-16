@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:counter_sample/model/counter_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc.dart';
 
 class ConfigurationsBloc
@@ -25,7 +22,7 @@ class ConfigurationsBloc
     yield ConfigurationsEditCountState();
   }
 
-  Stream<ConfigurationsState> _mapInitializeEventToState() async* {
+//  Stream<ConfigurationsState> _mapInitializeEventToState() async* {
 //    String recoveredData = (await SharedPreferences.getInstance()).getString('counterList');
 //    Map<String, dynamic> recoverMap = Map();
 //    var jsonencode = jsonEncode(recoveredData);
@@ -33,5 +30,5 @@ class ConfigurationsBloc
 //    recoverMap.forEach((key, value){
 
 //    });
-  }
+//  }
 }
