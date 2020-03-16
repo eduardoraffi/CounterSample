@@ -73,7 +73,7 @@ class _EditableCounterItemState extends State<EditableCounterItem> {
                       color: Colors.black54)),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: widget.onTap,
               icon: Icon(Icons.mode_edit),
             )
           ]);

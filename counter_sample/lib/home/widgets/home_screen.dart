@@ -4,6 +4,7 @@ import 'package:counter_sample/model/counter_model.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -12,8 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex;
   List<Widget> screenList;
   List<CounterModel> _counterList;
-  GlobalKey<ConfigurationsScreenState> _globalConfigurationsKey =
-      GlobalKey<ConfigurationsScreenState>();
+
 
   @override
   void initState() {
@@ -22,7 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
     screenList = [
       CountListScreen(counterList: _counterList),
       ConfigurationsScreen(
-        key: _globalConfigurationsKey,
         counterList: _counterList,
       )
     ];
@@ -32,8 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: _getApplicationBar(),
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).colorScheme.background,
         body: screenList.elementAt(_selectedIndex),
         bottomNavigationBar: _getBottomNavigationBar());
   }
@@ -48,10 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
         selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-        backgroundColor: Colors.indigo,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 5,
         unselectedItemColor: Colors.white70,
-        selectedItemColor: Colors.orange,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
         currentIndex: _selectedIndex,
         onTap: _onListTap,
       );
@@ -65,6 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
   _getApplicationBar() => AppBar(
         title: Text((_selectedIndex == 0) ? 'Counters' : 'Config'),
         elevation: 5,
-        backgroundColor: Colors.indigo,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       );
 }

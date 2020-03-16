@@ -14,7 +14,9 @@ class CounterItem extends StatelessWidget {
       margin: EdgeInsets.only(left: 32, right: 32, bottom: 16, top: 16),
       padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
       decoration: BoxDecoration(
-          color: Colors.white,
+          color: (counterModel.isSelected)
+              ? Colors.white
+              : Colors.white.withOpacity(0.5),
           border: Border.all(color: Colors.black, width: 1),
           borderRadius: BorderRadius.all(Radius.circular(5)),
           boxShadow: [

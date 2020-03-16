@@ -22,37 +22,41 @@ class _EditValuesDialogState extends State<EditValuesDialog> {
   Timer _timer;
   TextEditingController _textEditingController;
   FocusNode _focusNode;
-  String _newText;
 
   @override
   void initState() {
     _focusNode = FocusNode();
     _textEditingController = TextEditingController();
-    _newText = '';
     super.initState();
   }
 
-  Future<bool> _onWillPopScope() async{
+  Future<bool> _onWillPopScope() async {
     setState(() {
       Navigator.pop(context);
       widget.configurationsBloc.add(ConfigurationsInitialEvent());
     });
-}
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPopScope,
-      child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.black87, width: 1),
-            shape: BoxShape.rectangle,
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(5))),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: _getWidgetList(),
+      child: SingleChildScrollView(
+        controller: ScrollController(),
+        scrollDirection: Axis.vertical,
+        child: Container(
+          padding: EdgeInsets.only(bottom: 1),
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 1),
+              shape: BoxShape.rectangle,
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: _getWidgetList(),
+          ),
         ),
       ),
     );
@@ -108,7 +112,7 @@ class _EditValuesDialogState extends State<EditValuesDialog> {
           maxLines: 1,
           textAlign: TextAlign.left,
           style: TextStyle(fontSize: 18, color: Colors.black87),
-          cursorColor: Colors.blue,
+          cursorColor: Theme.of(context).colorScheme.primary,
         ),
       );
 
@@ -127,8 +131,7 @@ class _EditValuesDialogState extends State<EditValuesDialog> {
             onPressed: () {
               Navigator.pop(context);
               widget.configurationsBloc.add(ConfigurationsInitialEvent());
-            }
-              ,
+            },
           ),
         ),
       );
@@ -207,7 +210,7 @@ class _EditValuesDialogState extends State<EditValuesDialog> {
         onVerticalDragCancel: null,
         child: Container(
           decoration: BoxDecoration(
-              color: (isToAdd) ? Colors.blue : Colors.black26,
+              color: (isToAdd) ? Theme.of(context).colorScheme.primary : Colors.black26,
               borderRadius: (!isToAdd)
                   ? BorderRadius.only(
                       bottomLeft: Radius.circular(10),

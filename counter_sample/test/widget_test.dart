@@ -5,26 +5,26 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'package:counter_sample/configurations/configurations_screen.dart';
+import 'package:counter_sample/model/counter_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:counter_sample/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Dialog test', (WidgetTester tester) async {
+    List<CounterModel> counterList = [
+      CounterModel(
+          counter: 1, isSelected: true, counterNumber: 1, counterTitle: ''),
+      CounterModel(
+          counter: 1, isSelected: true, counterNumber: 2, counterTitle: '')
+    ];
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(ConfigurationsScreen(
+        counterList: counterList));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+        final titleFinder = find.text('Counters');
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(titleFinder, findsOneWidget);
   });
 }

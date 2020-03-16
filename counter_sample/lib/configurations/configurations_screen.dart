@@ -1,13 +1,13 @@
-import 'package:counter_sample/commons/common_widgets.dart';
 import 'package:counter_sample/configurations/bloc/bloc.dart';
+import 'package:counter_sample/configurations/widgets/add_remove_counter_button.dart';
 import 'package:counter_sample/configurations/widgets/edit_values_dialog.dart';
 import 'package:counter_sample/configurations/widgets/editable_counter_item.dart';
-import 'package:counter_sample/count_list/widgets/counter_item.dart';
 import 'package:counter_sample/model/counter_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// ignore: must_be_immutable
 class ConfigurationsScreen extends StatefulWidget {
   ConfigurationsScreen({Key key, @required this.counterList}) : super(key: key);
 
@@ -45,8 +45,11 @@ class ConfigurationsScreenState extends State<ConfigurationsScreen> {
                   barrierDismissible: false,
                   context: context,
                   child: Dialog(
-                    backgroundColor: Colors.transparent,
-                      child: EditValuesDialog(counterModel: _counterModel, configurationsBloc: _configurationsBloc,)),
+                      backgroundColor: Colors.transparent,
+                      child: EditValuesDialog(
+                        counterModel: _counterModel,
+                        configurationsBloc: _configurationsBloc,
+                      )),
                 );
               });
             }
@@ -78,16 +81,37 @@ class ConfigurationsScreenState extends State<ConfigurationsScreen> {
     List<Widget> widgetList = List();
     widgetList.add(_getTextWidget('Counters'));
     widgetList.add(_getButtons());
+    if(widget.counterList.isEmpty){
+      widgetList.add(_getNoListIndicator());
+    }
     return widgetList;
   }
+
+  _getNoListIndicator() => Padding(
+        padding: const EdgeInsets.only(left: 32,right: 32),
+        child: Row(
+          children: <Widget>[
+            Image.asset(
+              'res/assets/arrow_up.png',
+              height: 150,
+              width: 150,
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            Image.asset(
+              'res/assets/click_add.png',
+              height: 150,
+              width: 150,
+              color: Color(0xFF444749),
+            )
+          ],
+        ),
+      );
 
   _getTextWidget(String text) => Padding(
       padding: EdgeInsets.only(left: 32, top: 16, bottom: 16),
       child: Text(text,
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-              color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 20),
-          textAlign: TextAlign.start));
+          style: Theme.of(context).textTheme.title));
 
   _getButtons() => Padding(
         padding: EdgeInsets.only(left: 32, right: 32),
@@ -95,12 +119,32 @@ class ConfigurationsScreenState extends State<ConfigurationsScreen> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            CommonWidgets.getCommonButton(_addTapped, 'Add\ncounter'),
+            AddRemoveCounterButton(text: 'Add\ncounter', onTap: _addTapped),
             SizedBox(width: 8),
-            CommonWidgets.getCommonButton(() {}, 'Remove\ncounter')
+            AddRemoveCounterButton(
+                text: 'Remove\ncounter', onTap: _removeTapped)
           ],
         ),
       );
+
+  _removeTapped() {
+    setState(() {
+      if (widget.counterList.isNotEmpty) {
+        int indexToRemove = 0;
+        widget.counterList.forEach((counter) {
+          if (counter.isSelected) {
+            counter.isSelected = false;
+          } else {
+            indexToRemove++;
+          }
+        });
+        widget.counterList[0].isSelected = true;
+        widget.counterList.removeAt(indexToRemove);
+      } else {
+        _configurationsBloc.add(ConfigurationsInitialEvent());
+      }
+    });
+  }
 
   _addTapped() {
     setState(() {
